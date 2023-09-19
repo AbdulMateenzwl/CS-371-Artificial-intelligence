@@ -23,6 +23,9 @@ Position = Tuple[int, int]
 ############################################################
 # Problem 4a
 
+def compare_function(word: str) -> str:
+    return (word, len(word))
+    
 def find_alphabetically_first_word(text: str) -> str:
     """
     Given a string |text|, return the word in |text| that comes first
@@ -32,8 +35,13 @@ def find_alphabetically_first_word(text: str) -> str:
     it is acceptable to either return an empty string or throw an error.
     """
     # BEGIN_YOUR_CODE (our solution is 1 line of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+    words = text.split()
+    if len(words) == 0:
+        return ""
+    first_word = min(words,key=compare_function)
+    return first_word
     # END_YOUR_CODE
+
 
 
 ############################################################
@@ -45,7 +53,13 @@ def euclidean_distance(loc1: Position, loc2: Position) -> float:
     are pairs of numbers (e.g., (3, 5)).
     """
     # BEGIN_YOUR_CODE (our solution is 1 line of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+    #Solution 1
+    # x1, y1 = loc1
+    # x2, y2 = loc2
+    # distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+    # return distance
+    #Solution 2
+    return math.sqrt((loc2[0]-loc1[0])**2 + (loc2[1]-loc1[1])**2)
     # END_YOUR_CODE
 
 
@@ -91,7 +105,12 @@ def sparse_vector_dot_product(v1: SparseVector, v2: SparseVector) -> float:
     Note: A sparse vector has most of its entries as 0.
     """
     # BEGIN_YOUR_CODE (our solution is 1 line of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+    # Initialize the dot product as 0
+    dot_product = 0.0
+    for key1 in v1:
+        if key1 in v2:
+            dot_product += v1[key1] * v2[key1]
+    return dot_product
     # END_YOUR_CODE
 
 
@@ -110,8 +129,14 @@ def increment_sparse_vector(v1: SparseVector, scale: float, v2: SparseVector,
     This function will be useful later for linear classifiers.
     """
     # BEGIN_YOUR_CODE (our solution is 2 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
-    # END_YOUR_CODE
+    for key2 in v2:
+        increment_value = scale * v2[key2]
+        if scale == 0.0:
+            if key2 not in v1:
+                v1[key2] = increment_value
+        else:
+            v1[key2] += increment_value
+# END_YOUR_CODE
 
 
 ############################################################
@@ -124,5 +149,10 @@ def find_nonsingleton_words(text: str) -> Set[str]:
     You might find it useful to use collections.defaultdict(int).
     """
     # BEGIN_YOUR_CODE (our solution is 4 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+    words = text.split()
+    word_counts = defaultdict(int)
+    for word in words:
+        word_counts[word] += 1
+    nonsingleton_words = {word for word, count in word_counts.items() if count > 1}
+    return nonsingleton_words
     # END_YOUR_CODE
