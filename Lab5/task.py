@@ -86,8 +86,8 @@ def a_star_search(initial_state, final_state):
     return None
 
 if __name__ == "__main__":
-    initial_state = [[1, 2, 3],
-                    [0, 4, 6], 
+    initial_state = [[1,4, 3],
+                    [0, 2, 6], 
                     [7, 5, 8]]
     final_state = [[1, 2, 3], 
                 [4, 5, 6], 
