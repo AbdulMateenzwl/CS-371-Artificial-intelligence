@@ -1,40 +1,51 @@
 import heapq
 
-graph = {
-    'A': [('B', 2), ('C', 4)],
-    'B': [('D', 2)],
-    'C': [('D', 5)],
-    'D': [('E', 3)],
-    'E': []
-}
+class Graph:
+    def __init__(self):
+        self.graph = {}
 
-def uniform_cost_search(graph, start, goal):
-    priority_queue = [(0, start, [])]  
-    visited = set()
+    def add_edge(self, start, end, cost):
+        if start in self.graph:
+            self.graph[start].append((end, cost))
+        else:
+            self.graph[start] = [(end, cost)]
 
-    while priority_queue:
-        cost, node, path = heapq.heappop(priority_queue)
-        if node in visited:
-            continue
+    def uniform_cost_search(self, start, goal):
+        priority_queue = [(0, start, [])]
+        visited = set()
 
-        visited.add(node)
+        while priority_queue:
+            cost, node, path = heapq.heappop(priority_queue)
+            if node in visited:
+                continue
 
-        if node == goal:
-            return cost, path + [node]
+            visited.add(node)
 
-        for neighbor, edge_cost in graph.get(node, []):
-            if neighbor not in visited:
-                new_path = path + [node]
-                heapq.heappush(priority_queue, (cost + edge_cost, neighbor, new_path))
+            if node == goal:
+                return cost, path + [node]
 
-    return float('inf'), []
+            for neighbor, edge_cost in self.graph[node]:
+                if neighbor not in visited:
+                    heapq.heappush(priority_queue, (cost + edge_cost, neighbor, path + [node]))
 
-start_node = 'A'
-goal_node = 'E'
-cost, path = uniform_cost_search(graph, start_node, goal_node)
 
-if cost != float('inf'):
-    print(f"Minimum cost from {start_node} to {goal_node}: {cost}")
-    print("Path:", " -> ".join(path))
-else:
-    print(f"No path found from {start_node} to {goal_node}")
+        return float('inf'), []
+
+if __name__ == '__main__':
+    graph = Graph()
+    graph.add_edge('A', 'B', 2)
+    graph.add_edge('A', 'C', 4)
+    graph.add_edge('A', 'D', 1)
+    graph.add_edge('B', 'D', 2)
+    graph.add_edge('C', 'D', 5)
+    graph.add_edge('D', 'E', 3)
+
+    start_node = 'A'
+    goal_node = 'E'
+    cost, path = graph.uniform_cost_search(start_node, goal_node)
+
+    if cost != float('inf'):
+        print(f"Minimum cost from {start_node} to {goal_node}: {cost}")
+        print("Path:", " -> ".join(path))
+    else:
+        print(f"No path found from {start_node} to {goal_node}")
